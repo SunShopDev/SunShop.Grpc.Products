@@ -1,0 +1,53 @@
+﻿version: '3.8'
+
+services:
+    
+  sqlserver:   # SQL Server 2019
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: SunShop.BD.Products
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password123!
+      - MSSQL_PID=Developer
+    ports:
+      - "1435:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - SunShop.Grpc.Products-Network
+    restart: unless-stopped
+    healthcheck: # ⚠️ HEALTHCHECK SIMPLIFICADO - SIN SQLCMD
+      test: ["CMD-SHELL", "timeout 1 bash -c '</dev/tcp/localhost/1433' || exit 1"]      
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s    
+
+  sunshop.grpc.products: # SunShop.Grpc.Products
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: SunShop.Grpc.Products
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      # ⚠️ IMPORTANTE: Dentro de Docker, usa 'sqlserver' no 'localhost'
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=SunShop.Products;User Id=sa;Password=Password123!;TrustServerCertificate=True;MultipleActiveResultSets=true
+      - ASPNETCORE_URLS=http://+:7002
+    ports:
+      - "7002:7002"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - SunShop.Grpc.Products-Network
+    volumes:
+      - ./logs:/app/logs
+    restart: on-failure
+
+volumes:
+  sqlserver-data:
+    driver: local
+
+networks:
+  SunShop.Grpc.Products-Network:
+    driver: bridge

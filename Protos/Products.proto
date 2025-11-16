@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+option csharp_namespace = "SunShop.Grpc.Products.Protos";
+
+package SunShop;
+
+service Products {
+    rpc GetProducts (GetProductsRequest) returns (stream ProductResponse);    
+    rpc GetProduct (GetProductRequest) returns (ProductResponse);  
+    rpc SearchProducts (SearchProductsRequest) returns (stream ProductResponse);
+    rpc CreateProduct (CreateProductRequest) returns (ProductResponse);
+    rpc UpdateProduct (UpdateProductRequest) returns (ProductResponse);
+    rpc DeleteProduct (DeleteProductRequest) returns (DeleteProductResponse);
+}
+
+message GetProductsRequest {
+  int32 page_number = 1;      
+  int32 page_size = 2;         
+  string category = 3;         
+  double min_price = 4;        
+  double max_price = 5;        
+  bool active_only = 6;        
+}
+
+message GetProductRequest {
+  int32 id = 1;
+}
+
+message SearchProductsRequest {
+  string search_term = 1;      // Término de búsqueda
+  int32 page_number = 2;       // Número de página (default: 1)
+  int32 page_size = 3;         // Tamaño de página (default: 10)
+}
+
+message CreateProductRequest {
+ string name = 1;
+  string description = 2;
+  double price = 3;
+  int32 stock = 4;
+  string category = 5;
+  
+}
+
+message UpdateProductRequest {  
+ int32 id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  int32 stock = 5;
+  string category = 6;
+  bool is_active = 7;
+}
+
+message DeleteProductRequest {
+  int32 id = 1;
+}
+
+message ProductResponse {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  int32 stock = 5;
+  string category = 6;
+  string created_at = 7;
+  string updated_at = 8;
+  bool is_active = 9;
+}
+
+message DeleteProductResponse {
+   bool success = 1;
+  string message = 2;
+}
