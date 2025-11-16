@@ -44,7 +44,7 @@ Este proyecto implementa un microservicio gRPC para la administración de Product
    ```
 2. En Docker Desktop, verificar que los contenedores estén corriendo
 
-3. El servicio gRPC estará disponible en el puerto `7001`.
+3. El servicio gRPC estará disponible en el puerto `7002`.
 
 ## Invocación gRPC con Postman
 Puedes invocar el servicio gRPC usando Postman desde el siguiente enlace:
@@ -58,7 +58,7 @@ Puedes invocar el servicio gRPC usando Postman desde el siguiente enlace:
 
 ## Conectarse a la BD en Local
 Server: localhost
-Puerto: 1434
+Puerto: 1435
 Producto y Pass: se encuentran en `docker-compose.yml`.
 
 
