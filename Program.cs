@@ -101,7 +101,7 @@ try
             "DeleteProduct - Elimina un Producto (lógico)",
 
         },
-        grpcPort = 7002,
+        grpcPort = 7003,
         healthCheck = "/health"
     }));
 

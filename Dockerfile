@@ -19,7 +19,7 @@ COPY --from=build /app/publish .
 
 EXPOSE 7002
 
-ENV ASPNETCORE_URLS=http://+:7001
+ENV ASPNETCORE_URLS=http://+:7002
 ENV ASPNETCORE_ENVIRONMENT=Production
 
 ENTRYPOINT ["dotnet", "SunShop.Grpc.Products.dll"]
